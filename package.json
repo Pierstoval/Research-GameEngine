@@ -1,0 +1,8 @@
+{
+	"scripts": {
+		"build": "./node_modules/.bin/tsc index.ts && rm src/*.js"
+	},
+	"dependencies": {
+		"typescript": "^5.9.3"
+	}
+}
