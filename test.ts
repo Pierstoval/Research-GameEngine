@@ -1,45 +1,41 @@
-import {Engine, CallbackTickStrategy, CallbackMiddleware} from './index.ts';
+import {Engine, CallbackMiddleware} from './index.ts';
 
-const players = [
-    {id: 1, name: 'John'},
-    {id: 2, name: 'Jane'},
-]
+let tickIntervalMs = 1000;
 
 const engine = new Engine({
-    tickStrategy: new CallbackTickStrategy(function () {
-        return true;
-    }),
+    tickInterval: tickIntervalMs,
     middlewares: {
-        start: [
-            new CallbackMiddleware(() => console.info('[middlewares.start] Started!')),
-        ],
+        start: [],
         input: [
-            new CallbackMiddleware((context) => {
-                console.info('[middlewares.input] Received input:', context.lastInput);
+            new CallbackMiddleware(async (context, engine) => {
+                console.info('⌨ Received input:', JSON.stringify(context.lastInput));
+                const input = context.lastInput;
+                if (input['key']) {
+                    const key = input['key'];
+                    if (key === '+') {
+                        tickIntervalMs += 100;
+                        context.newSettings.tickInterval = tickIntervalMs;
+                    } else if (key === '-') {
+                        tickIntervalMs -= 100;
+                        context.newSettings.tickInterval = tickIntervalMs;
+                    } else if (key === "\u0003") {
+                        await engine.stop();
+                    }
+                }
             }),
         ],
         tick: [
-            new CallbackMiddleware(() => console.info('[middlewares.tick] Ticking middleware!')),
+            new CallbackMiddleware(() => console.info('⏲  Ticking every '+tickIntervalMs+'ms')),
         ],
     }
 });
 
-engine.start()
-    .then(async () => {
-        console.info('Game started!');
-        await engine.input('1');
-        await new Promise(resolve => setTimeout(resolve, 100));
-        await engine.input('2');
-        await new Promise(resolve => setTimeout(resolve, 200));
-        await engine.input('3');
-        await new Promise(resolve => setTimeout(resolve, 300));
-        await engine.input('4');
-        await engine.input('5');
-        await engine.pause();
-        await engine.input('6');
-        await engine.input('7');
-        await engine.resume();
-        await engine.input('8');
-        await engine.stop();
-    })
-;
+engine.start().then(async () => {
+    const stdin = process.stdin;
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding('utf8');
+    stdin.on( 'data', function(key){
+        engine.input({key: key});
+    });
+});

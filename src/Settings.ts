@@ -1,11 +1,10 @@
 import type {MiddlewareInterface} from "./Middleware";
-import type {TickStrategy} from "./TickStrategy";
 import {StackMiddleware} from "./Middleware";
 
 type PublicSettingsMiddlewares = Array<MiddlewareInterface>;
 
 export type Settings<S = PublicSettingsMiddlewares> = {
-    tickStrategy: TickStrategy,
+    tickInterval?: number,
 
     startState?: null|Record<string, unknown>,
 
