@@ -1,5 +1,5 @@
-import type {MiddlewareInterface} from "./Middleware";
-import {StackMiddleware} from "./Middleware";
+import type {MiddlewareInterface} from "./Middleware.ts";
+import {StackMiddleware} from "./Middleware.ts";
 
 type PublicSettingsMiddlewares = Array<MiddlewareInterface>;
 

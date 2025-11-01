@@ -1,5 +1,5 @@
-import {StackMiddleware, StateContext} from "./Middleware";
-import {Engine} from "./Engine";
+import {StackMiddleware, StateContext} from "./Middleware.ts";
+import {Engine} from "./Engine.ts";
 
 export class TickLoop {
     private intervalId: number = 0;

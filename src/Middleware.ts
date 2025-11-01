@@ -1,5 +1,5 @@
-import type {IncomingInput, RunningState} from "./Engine";
-import {Engine} from "./Engine";
+import type {IncomingInput, RunningState} from "./Engine.ts";
+import {Engine} from "./Engine.ts";
 
 export interface MiddlewareInterface {
     handle(context: StateContext, engine: Engine, stack: MiddlewareInterface): Promise<void>;

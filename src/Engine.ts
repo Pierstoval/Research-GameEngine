@@ -3,9 +3,9 @@ import {
     StackMiddleware,
     StateContext,
     UpdateSettingsMiddleware
-} from "./Middleware";
-import type {InternalGameSettings, Settings} from "./Settings";
-import {TickLoop} from "./TickLoop";
+} from "./Middleware.ts";
+import type {InternalGameSettings, Settings} from "./Settings.ts";
+import {TickLoop} from "./TickLoop.ts";
 
 export type RunningState = 'running'|'paused'|'stopped'|'uninitialized';
 
